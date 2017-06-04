@@ -55,7 +55,7 @@ int main(int argc, const char *argv[]) {
     vector<int> labels;
     // Read in the data. This can fail if no valid
     // input filename is given.
-    /*try {
+    try {
         read_csv(fn_csv, images, labels);
     } catch (cv::Exception& e) {
         cerr << "Error opening file \"" << fn_csv << "\". Reason: " << e.msg << endl;
@@ -72,7 +72,13 @@ int main(int argc, const char *argv[]) {
     // done, so that the training data (which we learn the
     // cv::LBPHFaceRecognizer on) and the test data we test
     // the model with, do not overlap.
-    cout << ""*/
+    string buf;
+    int testLabel;
+    cout << "enter path to test image" << endl;
+    cin >> buf;
+    cout << "enter who is this(int)" << endl;
+    cin >> testLabel;
+    /*
     images.push_back(imread("photo_test/0.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
 	images.push_back(imread("photo_test/1.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
 	images.push_back(imread("photo_test/2.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
@@ -83,11 +89,11 @@ int main(int argc, const char *argv[]) {
 	images.push_back(imread("photo_test/11.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
 	images.push_back(imread("photo_test/12.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
 	images.push_back(imread("photo_test/13.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
-	
-    Mat testSample = images[images.size() - 1];
-    int testLabel = labels[labels.size() - 1];
+	*/
+    Mat testSample = imread(buf, CV_LOAD_IMAGE_GRAYSCALE)
+    /*int testLabel = labels[labels.size() - 1];
     images.pop_back();
-    labels.pop_back();
+    labels.pop_back();*/
     // The following lines create an LBPH model for
     // face recognition and train it with the images and
     // labels read from the given CSV file.
@@ -128,7 +134,7 @@ int main(int argc, const char *argv[]) {
     // to 0.0 without retraining the model. This can be useful if
     // you are evaluating the model:
     //
-    model->setThreshold(0.0);
+    model->setThreshold(10);
     // Now the threshold of this model is set to 0.0. A prediction
     // now returns -1, as it's impossible to have a distance below
     // it
