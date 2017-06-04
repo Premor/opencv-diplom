@@ -172,8 +172,9 @@ int main(int argc, const char *argv[]) {
         // We could get the histograms for example:
         vector<Mat> histograms = model->getHistograms();
         // But should I really visualize it? Probably the length is interesting:
-
+		
         cout << "Size of the histograms: " << histograms[0].total() << endl << "Another test?";*/
+        buf="";
         cout << "Another test?" << endl;
         cin >> buf;
         if (buf=="no")
