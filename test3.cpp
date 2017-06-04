@@ -19,7 +19,6 @@
 #include "opencv2/face.hpp"
 #include "opencv2/highgui.hpp"
 #include <iostream>
-#include <ctime>
 #include <fstream>
 #include <sstream>
 using namespace cv;
@@ -74,13 +73,6 @@ int main(int argc, const char *argv[]) {
     // done, so that the training data (which we learn the
     // cv::LBPHFaceRecognizer on) and the test data we test
     // the model with, do not overlap.
-    string buf;
-    int testLabel;
-    cout << "enter path to test image" << endl;
-    cin >> buf;
-    cout << "enter who is this(int)" << endl;
-    cin >> testLabel;
-    unsigned int start_time =  clock();
     /*
     images.push_back(imread("photo_test/0.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
 	images.push_back(imread("photo_test/1.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
@@ -93,7 +85,7 @@ int main(int argc, const char *argv[]) {
 	images.push_back(imread("photo_test/12.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
 	images.push_back(imread("photo_test/13.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
 	*/
-    Mat testSample = imread(buf, CV_LOAD_IMAGE_GRAYSCALE);
+   
     /*int testLabel = labels[labels.size() - 1];
     images.pop_back();
     labels.pop_back();*/
@@ -121,46 +113,65 @@ int main(int argc, const char *argv[]) {
     //
     Ptr<LBPHFaceRecognizer> model = createLBPHFaceRecognizer();
     model->train(images, labels);
-    unsigned int train_complite =  clock();
+    
     // The following line predicts the label of a given
     // test image:
-    int predictedLabel = model->predict(testSample);
-    unsigned int prediction_complite =  clock();
-    //
-    // To get the confidence of a prediction call the model with:
-    //
-    //      int predictedLabel = -1;
-    //      double confidence = 0.0;
-    //      model->predict(testSample, predictedLabel, confidence);
-    //
-    string time = format("time to train =%d, time to prediction =%d", train_complite-start_time, prediction_complite-train_complite);
-    string result_message = format("Predicted class = %d / Actual class = %d.", predictedLabel, testLabel);
-    cout << result_message << endl << time << endl;
-    // First we'll use it to set the threshold of the LBPHFaceRecognizer
-    // to 0.0 without retraining the model. This can be useful if
-    // you are evaluating the model:
-    //
-    model->setThreshold(50);
-    // Now the threshold of this model is set to 0.0. A prediction
-    // now returns -1, as it's impossible to have a distance below
-    // it
-    predictedLabel = model->predict(testSample);
-    cout << "Predicted class = " << predictedLabel << endl;
-    // Show some informations about the model, as there's no cool
-    // Model data to display as in Eigenfaces/Fisherfaces.
-    // Due to efficiency reasons the LBP images are not stored
-    // within the model:
-    cout << "Model Information:" << endl;
-    string model_info = format("\tLBPH(radius=%i, neighbors=%i, grid_x=%i, grid_y=%i, threshold=%.2f)",
-            model->getRadius(),
-            model->getNeighbors(),
-            model->getGridX(),
-            model->getGridY(),
-            model->getThreshold());
-    cout << model_info << endl;
-    // We could get the histograms for example:
-    vector<Mat> histograms = model->getHistograms();
-    // But should I really visualize it? Probably the length is interesting:
-    cout << "Size of the histograms: " << histograms[0].total() << endl;
+
+    string buf;
+    int testLabel;
+    Mat testSample;
+    bool next=true;
+    while(next)
+    {cout << "enter path to test image" << endl;
+        cin >> buf;
+        cout << "enter who is this(int)" << endl;
+        cin >> testLabel;
+     	testSample = imread(buf, CV_LOAD_IMAGE_GRAYSCALE);
+    
+        int predictedLabel = model->predict(testSample);
+        
+        //
+        // To get the confidence of a prediction call the model with:
+        //
+        //      int predictedLabel = -1;
+        //      double confidence = 0.0;
+        //      model->predict(testSample, predictedLabel, confidence);
+        //
+        
+        string result_message = format("Predicted class = %d / Actual class = %d.", predictedLabel, testLabel);
+        cout << result_message << endl;
+        // First we'll use it to set the threshold of the LBPHFaceRecognizer
+        // to 0.0 without retraining the model. This can be useful if
+        // you are evaluating the model:
+        //
+        model->setThreshold(30);
+        // Now the threshold of this model is set to 0.0. A prediction
+        // now returns -1, as it's impossible to have a distance below
+        // it
+        predictedLabel = model->predict(testSample);
+        cout << "Predicted class = " << predictedLabel << endl;
+        // Show some informations about the model, as there's no cool
+        // Model data to display as in Eigenfaces/Fisherfaces.
+        // Due to efficiency reasons the LBP images are not stored
+        // within the model:
+        cout << "Model Information:" << endl;
+        string model_info = format("\tLBPH(radius=%i, neighbors=%i, grid_x=%i, grid_y=%i, threshold=%.2f)",
+                model->getRadius(),
+                model->getNeighbors(),
+                model->getGridX(),
+                model->getGridY(),
+                model->getThreshold());
+        cout << model_info << endl;
+        // We could get the histograms for example:
+        vector<Mat> histograms = model->getHistograms();
+        // But should I really visualize it? Probably the length is interesting:
+        cout << "Size of the histograms: " << histograms[0].total() << endl << "Another test?";
+        cin >> buf;
+        if (buf.length()>0)
+        	next=true;
+        else
+        	next=false;
+
+    }
     return 0;
 }
