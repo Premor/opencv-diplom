@@ -121,13 +121,18 @@ int main(int argc, const char *argv[]) {
     int testLabel;
     bool next=true;
     int predictedLabel;
+    int threshold;
     while(next)
     {cout << "enter path to test image" << endl;
         cin >> buf;
         cout << "enter who is this(int)" << endl;
         cin >> testLabel;
+        cout << "enter threshold" << endl;
+        cin >> threshold;
      	Mat testSample = imread(buf, CV_LOAD_IMAGE_GRAYSCALE);
-    
+    	
+    	model->setThreshold(threshold);
+
         predictedLabel = model->predict(testSample);
         
         //
@@ -139,7 +144,7 @@ int main(int argc, const char *argv[]) {
         //
         
         string result_message = format("Predicted class = %d / Actual class = %d.", predictedLabel, testLabel);
-        cout << result_message << endl;
+        cout << result_message << endl;/*
         // First we'll use it to set the threshold of the LBPHFaceRecognizer
         // to 0.0 without retraining the model. This can be useful if
         // you are evaluating the model:
@@ -154,6 +159,7 @@ int main(int argc, const char *argv[]) {
         // Model data to display as in Eigenfaces/Fisherfaces.
         // Due to efficiency reasons the LBP images are not stored
         // within the model:
+        */
         cout << "Model Information:" << endl;
         string model_info = format("\tLBPH(radius=%i, neighbors=%i, grid_x=%i, grid_y=%i, threshold=%.2f)",
                 model->getRadius(),
@@ -170,9 +176,7 @@ int main(int argc, const char *argv[]) {
         cout << "Size of the histograms: " << histograms[0].total() << endl << "Another test?";*/
         cout << "Another test?" << endl;
         cin >> buf;
-        if (buf.length()>0)
-        	next=true;
-        else
+        if (buf=="no")
         	next=false;
 
     }
