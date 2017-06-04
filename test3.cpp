@@ -162,7 +162,7 @@ int main(int argc, const char *argv[]) {
                 model->getGridY(),
                 model->getThreshold());
         cout << model_info << endl;
-        testSample.release;	/*
+        testSample.release();	/*
         // We could get the histograms for example:
         vector<Mat> histograms = model->getHistograms();
         // But should I really visualize it? Probably the length is interesting:
