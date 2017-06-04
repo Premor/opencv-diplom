@@ -19,6 +19,7 @@
 #include "opencv2/face.hpp"
 #include "opencv2/highgui.hpp"
 #include <iostream>
+#include <ctime>
 #include <fstream>
 #include <sstream>
 using namespace cv;
@@ -44,6 +45,7 @@ static void read_csv(const string& filename, vector<Mat>& images, vector<int>& l
 int main(int argc, const char *argv[]) {
     // Check for valid command line arguments, print usage
     // if no arguments were given.
+
     if (argc != 2) {
         cout << "usage: " << argv[0] << " <csv.ext>" << endl;
         exit(1);
@@ -78,6 +80,7 @@ int main(int argc, const char *argv[]) {
     cin >> buf;
     cout << "enter who is this(int)" << endl;
     cin >> testLabel;
+    unsigned int start_time =  clock();
     /*
     images.push_back(imread("photo_test/0.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
 	images.push_back(imread("photo_test/1.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(0);
@@ -118,9 +121,11 @@ int main(int argc, const char *argv[]) {
     //
     Ptr<LBPHFaceRecognizer> model = createLBPHFaceRecognizer();
     model->train(images, labels);
+    unsigned int train_complite =  clock();
     // The following line predicts the label of a given
     // test image:
     int predictedLabel = model->predict(testSample);
+    unsigned int prediction_complite =  clock();
     //
     // To get the confidence of a prediction call the model with:
     //
@@ -128,13 +133,14 @@ int main(int argc, const char *argv[]) {
     //      double confidence = 0.0;
     //      model->predict(testSample, predictedLabel, confidence);
     //
+    string time = format("time to train =%d, time to prediction =%d", train_complite-start_time, prediction_complite-train_complite);
     string result_message = format("Predicted class = %d / Actual class = %d.", predictedLabel, testLabel);
-    cout << result_message << endl;
+    cout << result_message << endl << time << endl;
     // First we'll use it to set the threshold of the LBPHFaceRecognizer
     // to 0.0 without retraining the model. This can be useful if
     // you are evaluating the model:
     //
-    model->setThreshold(10);
+    model->setThreshold(50);
     // Now the threshold of this model is set to 0.0. A prediction
     // now returns -1, as it's impossible to have a distance below
     // it
