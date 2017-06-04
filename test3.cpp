@@ -90,7 +90,7 @@ int main(int argc, const char *argv[]) {
 	images.push_back(imread("photo_test/12.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
 	images.push_back(imread("photo_test/13.jpg", CV_LOAD_IMAGE_GRAYSCALE)); labels.push_back(1);
 	*/
-    Mat testSample = imread(buf, CV_LOAD_IMAGE_GRAYSCALE)
+    Mat testSample = imread(buf, CV_LOAD_IMAGE_GRAYSCALE);
     /*int testLabel = labels[labels.size() - 1];
     images.pop_back();
     labels.pop_back();*/
