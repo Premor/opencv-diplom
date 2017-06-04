@@ -119,16 +119,16 @@ int main(int argc, const char *argv[]) {
 
     string buf;
     int testLabel;
-    Mat testSample;
     bool next=true;
+    int predictedLabel;
     while(next)
     {cout << "enter path to test image" << endl;
         cin >> buf;
         cout << "enter who is this(int)" << endl;
         cin >> testLabel;
-     	testSample = imread(buf, CV_LOAD_IMAGE_GRAYSCALE);
+     	Mat testSample = imread(buf, CV_LOAD_IMAGE_GRAYSCALE);
     
-        int predictedLabel = model->predict(testSample);
+        predictedLabel = model->predict(testSample);
         
         //
         // To get the confidence of a prediction call the model with:
@@ -162,10 +162,13 @@ int main(int argc, const char *argv[]) {
                 model->getGridY(),
                 model->getThreshold());
         cout << model_info << endl;
+        testSample.release;	/*
         // We could get the histograms for example:
         vector<Mat> histograms = model->getHistograms();
         // But should I really visualize it? Probably the length is interesting:
-        cout << "Size of the histograms: " << histograms[0].total() << endl << "Another test?";
+
+        cout << "Size of the histograms: " << histograms[0].total() << endl << "Another test?";*/
+        cout << "Another test?" << endl;
         cin >> buf;
         if (buf.length()>0)
         	next=true;
