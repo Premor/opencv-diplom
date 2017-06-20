@@ -117,11 +117,11 @@ int main(int argc, const char *argv[]) {
     // The following line predicts the label of a given
     // test image:
 
-    string buf;
-    int testLabel;
+    string buf="photo_test/input.jpg";
+    //int testLabel;
     bool next=true;
-    int predictedLabel;
-    int threshold;
+    //int predictedLabel;
+    //int threshold;
     while(next)
     {cout << "enter path to test image" << endl;
         cin >> buf;
@@ -131,7 +131,7 @@ int main(int argc, const char *argv[]) {
         cin >> threshold;
      	Mat testSample = imread(buf, CV_LOAD_IMAGE_GRAYSCALE);
     	
-    	model->setThreshold(threshold);
+    	//model->setThreshold(threshold);
 
         predictedLabel = model->predict(testSample);
         
@@ -143,7 +143,7 @@ int main(int argc, const char *argv[]) {
         //      model->predict(testSample, predictedLabel, confidence);
         //
         
-        string result_message = format("Predicted class = %d / Actual class = %d.", predictedLabel, testLabel);
+        string result_message = format("Predicted class = %d", predictedLabel);
         cout << result_message << endl;/*
         // First we'll use it to set the threshold of the LBPHFaceRecognizer
         // to 0.0 without retraining the model. This can be useful if
