@@ -35,7 +35,11 @@ int main(int argc , char *argv[])
 	
 	//keep communicating with server
 	printf("Enter message : ");
-	message = "gavno";
+	message[0] = 'g';
+	message[1] = 'a';
+	message[2] = 'v';
+	message[3] = 'n';
+	message[4] = 'o';
 	printf(message);
 		//Send some data
 	if( send(sock , message , strlen(message) , 0) < 0) {
